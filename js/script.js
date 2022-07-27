@@ -46,6 +46,7 @@ guessButton.addEventListener("click", function(e){
     letterInput.value = "";
 
     //console.log(validateInput(guess));
+
 });
 
 const validateInput = function(input){
@@ -77,5 +78,52 @@ const makeGuess = function(guess){
     } else {
         guessedLetters.push(guess);
         console.log(guessedLetters);
+        guessLettersDisplay();
+        updateWordInProgress(guessedLetters);
+    }
+};
+
+// Show the letters guessed on screen 
+
+const guessLettersDisplay= function(){
+
+    //Clear the unordered list
+    guessedLettersElement.innerText= "";
+    for (const letter of guessedLetters) {
+        const li= document.createElement("li");
+        li.innerText= letter;
+        guessedLettersElement.append (li);
+    }
+};
+
+//Function to update the word in progress symbols with letters guessed 
+
+const updateWordInProgress = function (guessedLetters){
+    const wordUpper = word.toUpperCase();
+    const wordArray = wordUpper.split("");
+
+    //console.log(wordArray);
+    const revealWord = [];
+
+    for (const letter of wordArray){
+        if (guessedLetters.includes(letter)){
+            revealWord.push(letter.toUpperCase());
+
+        } else {
+            revealWord.push("●");
+        }
+    }
+   //console.log(revealWord);
+
+    wordInProgress.innerText = revealWord.join ("");
+    playerWinCheck();
+};
+
+// Checks if the entire word was guessed correctly
+
+const playerWinCheck = function (){
+    if (word.toUpperCase()=== wordInProgress.innerText){
+        message.classList.add("win");
+        message.innerHTML = `<p class="highlight"> You guessed the correct word! Congrats! </p>`;
     }
 };
